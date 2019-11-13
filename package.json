@@ -9,6 +9,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "aws-sdk": "^2.569.0",
     "dotenv": "^8.2.0",
-    "fluent-ffmpeg": "^2.1.2"
+    "fluent-ffmpeg": "^2.1.2",
+    "node-fetch": "^2.6.0"
   }
 }

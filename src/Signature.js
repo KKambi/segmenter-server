@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const makeSignature = (secretKey, method, url, timestamp, accessKey) => {
+const createSignature = (secretKey, method, url, timestamp, accessKey) => {
 	var space = " ";
 	var newLine = "\n";
 
@@ -20,5 +20,5 @@ const makeSignature = (secretKey, method, url, timestamp, accessKey) => {
 }
 
 module.exports = {
-  makeSignature
+  createSignature
 };
