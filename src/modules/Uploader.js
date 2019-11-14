@@ -4,7 +4,6 @@ const path = require('path');
 const Storage = require('./Storage');
 
 const Uploader = {
-  // 특정 디렉토리의 파일들 업로드
   uploadFiles: async (videoDir) => {
     // 특정 디렉토리의 파일 목록 불러오기
     const files = fs.readdirSync(videoDir);
@@ -25,21 +24,7 @@ const Uploader = {
     }, []);
 
     // Upload 작업 병렬 처리
-    for await (let upload of uploads){
-    }
-
-    // 비디오 형식의 파일들만 업로드
-    // for (const fileName of files){
-    //   const isVideo = regExp.test(fileName)
-    
-    //   if (isVideo === false) {
-    //     console.log("There is non-video file!");
-    //     continue;
-    //   }
-    
-    //   const localFilePath = path.resolve(videoDir, fileName);
-    //   await Storage.uploadVideo(fileName, localFilePath);
-    // }
+    await Promise.all(uploads);
 
     // 파일 목록 반환
     return files;
