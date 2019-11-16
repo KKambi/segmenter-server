@@ -5,6 +5,7 @@ require('dotenv').config();
 const Storage = require('../modules/Storage');
 const Transcoder = require('../modules/Transcoder');
 const Parser = require('../modules/Parser');
+const Segmenter = require('../modules/Segmenter');
 
 const videoNames = ['360p.mp4', '480p.mp4', '720p.mp4'];
 
@@ -62,6 +63,15 @@ const StreamController = {
 
     // downloadVideo 작업 병렬 처리
     await Promise.all(totalDownloads);
+  },
+
+  // 다운로드받은 360/480/720p 영상들을 분할하는 함수
+  createSegments: async (files) => {
+    const listSize = files.length;
+    for (let i=0; i<listSize; i++){
+      const fileName = files[i];
+      await Segmenter.createSegment(fileName);
+    }
   },
 }
 

@@ -22,7 +22,7 @@ const signature = Signature.createSignature(
 const Transcoder = {
   requestJob: async (fileName) => {
     // Job 정보설정
-    const name = Parser.removeExtension(fileName)
+    const name = Parser.removeExtension(fileName);
     const path = Parser.createStoragePath(fileName);
     const job = Job.createJob(
       name,
