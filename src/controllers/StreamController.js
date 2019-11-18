@@ -41,13 +41,13 @@ const StreamController = {
     // console.log("Segmeneter 서버에서 분할 작업 완료!");
 
     // 360/480/720p 원본영상 삭제하기
-    console.log("Segmenter 서버에서 원본영상 삭제 시작!");
-    await StreamScript.removeVideos('videos', files);
-    console.log("Segmenter 서버에서 원본영상 삭제 완료!");
+    // console.log("Segmenter 서버에서 원본영상 삭제 시작!");
+    // await StreamScript.removeVideos('videos', files);
+    // console.log("Segmenter 서버에서 원본영상 삭제 완료!");
 
-    //TODO: console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
-    //await StreamScript.uploadSegement(files);
-    //console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
+    // console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
+    // await StreamScript.uploadSegments('videos', files);
+    // console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
   },
 };
 

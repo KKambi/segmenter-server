@@ -81,6 +81,24 @@ const StreamScript = {
       await Segmenter.createSegment(fileName);
     }
   },
+
+  uploadSegments: async (videosDir, files) => {
+    let uploads = [];
+    
+    files.forEach((fileName) => {
+      const fileDir = `${videosDir}/${Parser.removeExtension(fileName)}`;
+      const streams = fs.readdirSync(fileDir);
+
+      // Upload 작업의 Promise 배열 만들기
+      streams.forEach((stream) => {
+        const localFilePath = path.resolve(fileDir, stream);
+        uploads.push(Storage.uploadVideo(stream, localFilePath));
+      });
+    })
+    
+    // Upload 작업 병렬 처리
+    await Promise.all(uploads);
+  }
 }
 
 module.exports = StreamScript;
