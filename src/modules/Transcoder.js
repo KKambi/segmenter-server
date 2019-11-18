@@ -10,7 +10,7 @@ const URL = "https://vodtranscoder.apigw.ntruss.com/api/v2/jobs";
 const timestamp = Date.now();
 
 // API 요청을 위한 시그네처
-const signature = Signature.createSignature(
+const signature = Signature.create(
   process.env.SECRET_KEY,
   "POST",
   "/api/v2/jobs",

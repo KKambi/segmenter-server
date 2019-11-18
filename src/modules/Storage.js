@@ -20,7 +20,7 @@ const S3 = new AWS.S3({
 
 const Storage = {
   uploadVideo: async (name, localFilePath) => {
-    let dirName = 'videos';
+    const dirName = 'videos';
 
     // 파일 업로드
     await S3.putObject({
@@ -38,8 +38,8 @@ const Storage = {
     !fs.existsSync(localDirPath) && fs.mkdirSync(localDirPath)
 
     // Storage부터 해당 비디오 다운로드 시작
-    let outStream = fs.createWriteStream(localDirPath + '/' + videoName);
-    let inStream = S3.getObject({
+    const outStream = fs.createWriteStream(localDirPath + '/' + videoName);
+    const inStream = S3.getObject({
         Bucket: bucketPath,
         Key: videoName
     }).createReadStream(); 

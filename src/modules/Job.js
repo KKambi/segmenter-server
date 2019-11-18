@@ -1,19 +1,19 @@
 
 const Job = {
   // 16:9 비율로만 트랜스코딩
-  createJob: (inputFileName ,inputFilePath, bucketName) => ({
+  createJob: (inputFileName ,inputFilePath, inputBucketName) => ({
     jobName: "transcode-360-720",
     inputs: [
       {
-        inputBucketName: bucketName,
-        inputFilePath: inputFilePath
+        inputBucketName,
+        inputFilePath
       }
     ],
     output: {
-      outputBucketName: bucketName,
-      outputFilePath: "/transcoded/" + inputFileName,
+      outputBucketName: inputBucketName,
+      outputFilePath: `/transcoded/${inputFileName}`,
       thumbnailOn: "true",
-      thumbnailBucketName: bucketName,
+      thumbnailBucketName: inputBucketName,
       thumbnailFilePath: "/thumbnails/",
       thumbnailFileFormat: "PNG",
       thumbnailAccessControl: "PRIVATE",
