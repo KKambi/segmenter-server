@@ -3,19 +3,25 @@ const StreamScript = require('./StreamScript');
 const StreamController = {
   uploadVideos: async () => {
     // video directory는 서버의 최상위에 존재하는 디렉토리여야 한다.
-    // console.log("업로드 시작!");
-    // const files = await StreamScript.uploadVideos('videos');
-    // console.log("업로드 완료!\n");
+    console.log("업로드 시작!");
+    const files = await StreamScript.uploadVideos('videos');
+    console.log("업로드 완료!\n");
 
-    // FIXME: 원본 영상 삭제하기
+    // 원본 영상 삭제하기
     console.log("원본영상 삭제 시작!");
     await StreamScript.removeVideos('videos');
     console.log("원본영상 삭제 완료!\n");
 
     // nCloud Transcoder API에 Job 생성을 요청한다.
-    // console.log("Transcode Job생성 요청!");
-    // await StreamScript.requestJobs(files);
-    // console.log("Transcoder Job생성 요청완료!\n");
+    console.log("Transcode Job생성 요청!");
+    try {
+      await StreamScript.requestJobs(files);
+      console.log("Transcoder Job생성 요청완료!\n");
+      return true;
+    } catch(err) {
+      console.log("Transcoder Job생성 요청실패!\n");
+      return false;
+    }
   },
 
   createStreams: async () => {
@@ -30,13 +36,14 @@ const StreamController = {
     // await StreamScript.downloadVideos(files);
     // console.log("Segmenter 서버에 영상 다운로드 완료!");
 
-    console.log("Segmeneter 서버에서 분할 작업 시작!");
-    await StreamScript.createSegments(files);
-    console.log("Segmeneter 서버에서 분할 작업 완료!");
+    // console.log("Segmeneter 서버에서 분할 작업 시작!");
+    // await StreamScript.createSegments('videos', files);
+    // console.log("Segmeneter 서버에서 분할 작업 완료!");
 
-    //FIXME: 원본 영상 삭제하기
-    //console.log("Segmenter 서버에서 원본영상 삭제 시작!")
-    //console.log("Segmenter 서버에서 원본영상 삭제 완료!")
+    // 360/480/720p 원본영상 삭제하기
+    console.log("Segmenter 서버에서 원본영상 삭제 시작!");
+    await StreamScript.removeVideos('videos', files);
+    console.log("Segmenter 서버에서 원본영상 삭제 완료!");
 
     //TODO: console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
     //await StreamScript.uploadSegement(files);

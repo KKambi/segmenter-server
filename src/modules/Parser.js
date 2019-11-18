@@ -1,6 +1,12 @@
 const path = require('path');
 
 const Parser = {
+  isVideo: (fileName) => {
+    const extension = fileName.slice(fileName.length-3);
+    const regExp = new RegExp("(mp4|avi|mkv|flv$)", 'i');
+    return regExp.test(extension);
+  },
+
   removeExtension: (fileName) => {
     return fileName.slice(0, fileName.length-4)
   },
