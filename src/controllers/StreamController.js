@@ -1,78 +1,47 @@
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
-
-const Storage = require('../modules/Storage');
-const Transcoder = require('../modules/Transcoder');
-const Parser = require('../modules/Parser');
-const Segmenter = require('../modules/Segmenter');
-
-const videoNames = ['360p.mp4', '480p.mp4', '720p.mp4'];
+const StreamScript = require('./StreamScript');
 
 const StreamController = {
-  // Object storage에 영상들 업로드하는 함수
-  uploadVideos: async (videoDir) => {
-    // 특정 디렉토리의 파일 목록 불러오기
-    const files = fs.readdirSync(videoDir);
-    const regExp = new RegExp("(mp4|avi|mkv|flv$)", 'i');
+  uploadVideos: async () => {
+    // video directory는 서버의 최상위에 존재하는 디렉토리여야 한다.
+    // console.log("업로드 시작!");
+    // const files = await StreamScript.uploadVideos('videos');
+    // console.log("업로드 완료!\n");
 
-    // Upload 작업의 Promise 배열 만들기
-    const uploads = files.reduce((acc, fileName) => {
-      const isVideo = regExp.test(fileName)
-    
-      if (isVideo === false) {
-        console.log("There is non-video file!");
-        return acc;
-      }
-    
-      const localFilePath = path.resolve(videoDir, fileName);
-      acc.push(Storage.uploadVideo(fileName, localFilePath));
-      return acc;
-    }, []);
+    // FIXME: 원본 영상 삭제하기
+    console.log("원본영상 삭제 시작!");
+    await StreamScript.removeVideos('videos');
+    console.log("원본영상 삭제 완료!\n");
 
-    // Upload 작업 병렬 처리
-    await Promise.all(uploads);
-
-    // 파일 목록 반환
-    return files;
-  },
-  
-  // Transcoder API에 다수의 Job 생성 요청 보내는 함수
-  requestJobs: async (files) => {
-    // requestJob 작업의 Promise 배열 만들기
-    const requests = files.map((fileName) => {
-      return Transcoder.requestJob(fileName);
-    });
-
-    // requestJob 작업 병렬 처리
-    await Promise.all(requests);
+    // nCloud Transcoder API에 Job 생성을 요청한다.
+    // console.log("Transcode Job생성 요청!");
+    // await StreamScript.requestJobs(files);
+    // console.log("Transcoder Job생성 요청완료!\n");
   },
 
-  // Object Storage에서 분할할 비디오를 다운로드하는 함수
-  downloadVideos: async (files) => {
-    const totalDownloads = files.reduce((acc, fileName) => {
-      const dirName = Parser.removeExtension(fileName)
-      const bucketPath = process.env.BUCKET_NAME + "/transcoded/" + dirName;
-      
-      // downloadVideo 작업들을 push
-      videoNames.forEach((videoName) => {
-        acc.push(Storage.downloadVideo(dirName, videoName, bucketPath));
-      });
-      return acc;
-    }, []);
+  createStreams: async () => {
+    // FIXME: 임시 목업 파일
+    const files = [
+      "Beef - 11704.mp4",
+      "Food - 24999.mp4"
+    ]
 
-    // downloadVideo 작업 병렬 처리
-    await Promise.all(totalDownloads);
-  },
+    // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상들을 다운로드한다.
+    // console.log("Segmenter 서버에 해당 영상 다운로드!");
+    // await StreamScript.downloadVideos(files);
+    // console.log("Segmenter 서버에 영상 다운로드 완료!");
 
-  // 다운로드받은 360/480/720p 영상들을 분할하는 함수
-  createSegments: async (files) => {
-    const listSize = files.length;
-    for (let i=0; i<listSize; i++){
-      const fileName = files[i];
-      await Segmenter.createSegment(fileName);
-    }
+    console.log("Segmeneter 서버에서 분할 작업 시작!");
+    await StreamScript.createSegments(files);
+    console.log("Segmeneter 서버에서 분할 작업 완료!");
+
+    //FIXME: 원본 영상 삭제하기
+    //console.log("Segmenter 서버에서 원본영상 삭제 시작!")
+    //console.log("Segmenter 서버에서 원본영상 삭제 완료!")
+
+    //TODO: console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
+    //await StreamScript.uploadSegement(files);
+    //console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
   },
-}
+};
 
 module.exports = StreamController;

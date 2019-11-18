@@ -7,23 +7,27 @@ const Parser = require('./Parser');
 const Segmenter = {
   createSegment: async (fileName) => {
     // 비디오 정보
-    const name = Parser.removeExtension(fileName);
-    const filePathList = Parser.createLocalDirPath(name);
+    fileName = Parser.removeExtension(fileName);
+    const resolutionFilePathList = Parser.createLocalDirPath(fileName);
 
-    const listSize = filePathList.length;
+    const listSize = resolutionFilePathList.length;
     for (let i=0; i<listSize; i++){
-      const filePath = filePathList[i];
-      console.log(`${filePath} ffmpeg encoding 시작!`);
+      const resolutionFilePath = resolutionFilePathList[i];
+      const resolutionFilename = Parser.removeExtension(resolutionFilePath);
+      console.log(resolutionFilename)
       
-      const segmenter = ffmpeg(filePath, { timeout: 432000 })
+      console.log(`${resolutionFilePath} ffmpeg encoding 시작!`);
+      const segmenter = ffmpeg(resolutionFilePath, { timeout: 432000 })
         .addOptions([
+          "-threads 2", // cpu 사용율을 제한하기 위한 스레드 제한
+          "-start_number 0",
           "-profile:v baseline", // baseline profile (level 3.0) for H264 video codec
           "-level 3.0",
           "-hls_time 10", // 10 second segment duration
           "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
           "-f hls" // HLS format
         ])
-        .output(filePath + "test.m3u8");
+        .output(`${resolutionFilename}.stream.m3u8`);
         
       await new Promise((resolve, reject) => {
         segmenter.run();
