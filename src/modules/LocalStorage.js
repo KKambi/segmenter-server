@@ -19,6 +19,20 @@ const LocalStorage = {
     })
   },
 
+  removeSegment: (localVideoDir) => {
+    const files = fs.readdirSync(localVideoDir);
+    files.forEach((fileName) => {
+      const filePath = `${localVideoDir}/${fileName}`;
+      if (fs.existsSync(filePath)){
+        fs.unlinkSync(filePath, (err) => {
+          if (err) {
+            console.log(`${filePath} 파일 삭제 에러~${err}`)
+          }
+        });
+      }
+    })
+  },
+
   removeVideoDir: (localVideoDir) => {
     if (fs.existsSync(localVideoDir)){
       try {

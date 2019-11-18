@@ -19,15 +19,16 @@ const S3 = new AWS.S3({
 })
 
 const Storage = {
-  uploadVideo: async (name, localFilePath) => {
+  uploadVideo: async (name, localFilePath, fileDir) => {
     const dirName = 'videos';
+    const bucketPath = fileDir ? `${process.env.BUCKET_NAME}/${fileDir}` : `${process.env.BUCKET_NAME}/${dirName}`;
 
     // 파일 업로드
     await S3.putObject({
-        Bucket: process.env.BUCKET_NAME + "/" + dirName,
+        Bucket: bucketPath,
         Key: name,
         Body: fs.createReadStream(localFilePath)
-    }).promise();  
+    }).promise(); 
 
     console.log(`${name} 업로드 완료!`);
   },

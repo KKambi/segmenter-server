@@ -25,29 +25,36 @@ const StreamController = {
   },
 
   createStreams: async () => {
-    // FIXME: 임시 목업 파일
+    // FIXME: 임시 목업 파일 -> Job 응답에 따라 files 목록을 받아야 한다.
     const files = [
       "Beef - 11704.mp4",
-      "Food - 24999.mp4"
+      // "Food - 24999.mp4"
     ]
 
     // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상들을 다운로드한다.
-    // console.log("Segmenter 서버에 해당 영상 다운로드!");
-    // await StreamScript.downloadVideos(files);
-    // console.log("Segmenter 서버에 영상 다운로드 완료!");
+    console.log("Segmenter 서버에 해당 영상 다운로드!");
+    await StreamScript.downloadVideos(files);
+    console.log("Segmenter 서버에 영상 다운로드 완료!");
 
-    // console.log("Segmeneter 서버에서 분할 작업 시작!");
-    // await StreamScript.createSegments('videos', files);
-    // console.log("Segmeneter 서버에서 분할 작업 완료!");
+    // 트랜스코딩된 영상들을 스트림 데이터로 분할하기
+    console.log("Segmeneter 서버에서 분할 작업 시작!");
+    await StreamScript.createSegments('videos', files);
+    console.log("Segmeneter 서버에서 분할 작업 완료!");
 
     // 360/480/720p 원본영상 삭제하기
-    // console.log("Segmenter 서버에서 원본영상 삭제 시작!");
-    // await StreamScript.removeVideos('videos', files);
-    // console.log("Segmenter 서버에서 원본영상 삭제 완료!");
+    console.log("Segmenter 서버에서 원본영상 삭제 시작!");
+    await StreamScript.removeVideos('videos', files);
+    console.log("Segmenter 서버에서 원본영상 삭제 완료!");
 
-    // console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
-    // await StreamScript.uploadSegments('videos', files);
-    // console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
+    // 스트림 데이터 스토리지에 업로드하기
+    console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
+    await StreamScript.uploadSegments('videos', files);
+    console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
+
+    // 스트림 데이터 삭제하고 디렉토리까지 지우기
+    console.log("Segmenter 서버에서 스트림 데이터 삭제 시작!");
+    await StreamScript.removeSegments('videos', files);
+    console.log("Segmenter 서버에서 스트림 데이터 삭제 완료!");
   },
 };
 

@@ -41,6 +41,15 @@ const StreamScript = {
       const fileDir = Parser.removeExtension(fileName);
       const fileDirPath = `${videosDir}/${fileDir}`
       LocalStorage.removeVideo(fileDirPath);
+    })
+  },
+
+  // localVideoDir 디렉토리를 삭제하는 함수
+  removeSegments: async (videosDir, files) => {
+    files.forEach((fileName) => {
+      const fileDir = Parser.removeExtension(fileName);
+      const fileDirPath = `${videosDir}/${fileDir}`
+      LocalStorage.removeSegment(fileDirPath);
       LocalStorage.removeVideoDir(fileDirPath);
     })
   },
@@ -74,11 +83,11 @@ const StreamScript = {
   },
 
   // 다운로드받은 360/480/720p 영상들을 분할하는 함수
-  createSegments: async (files) => {
+  createSegments: async (videosDir, files) => {
     const listSize = files.length;
     for (let i=0; i<listSize; i++){
       const fileName = files[i];
-      await Segmenter.createSegment(fileName);
+      await Segmenter.createSegment(videosDir, fileName);
     }
   },
 
@@ -92,7 +101,7 @@ const StreamScript = {
       // Upload 작업의 Promise 배열 만들기
       streams.forEach((stream) => {
         const localFilePath = path.resolve(fileDir, stream);
-        uploads.push(Storage.uploadVideo(stream, localFilePath));
+        uploads.push(Storage.uploadVideo(stream, localFilePath, fileDir));
       });
     })
     

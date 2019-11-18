@@ -5,10 +5,10 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const Parser = require('./Parser');
 
 const Segmenter = {
-  createSegment: async (fileName) => {
+  createSegment: async (videosDir, fileName) => {
     // 비디오 정보
     fileName = Parser.removeExtension(fileName);
-    const resolutionFilePathList = Parser.createLocalDirPath(fileName);
+    const resolutionFilePathList = Parser.createLocalDirPath(videosDir, fileName);
 
     const listSize = resolutionFilePathList.length;
     for (let i=0; i<listSize; i++){
