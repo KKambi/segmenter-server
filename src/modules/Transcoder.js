@@ -42,7 +42,7 @@ const Transcoder = {
         "x-ncp-apigw-timestamp": timestamp,
       }
     });
-    const result = await data.json();
+    await data.json();
     console.log(`${fileName}요청상태: ${result.error.message}`);
   },
 }

@@ -10,15 +10,19 @@ router.post('/videos', async (req, res, next) => {
 })
 
 // 스트림 데이터를 생성
-router.post('/segments', (req, res, next) => {
-  console.log(req);
-  StreamController.createStreams();
+router.post('/segments', async (req, res, next) => {
+  const result = await StreamController.createStreams();
+  res.json({ result });
 });
 
 // Job 상태변경에 대한 알림을 받은 뒤, 개별항목에 대해 스트림 데이터 생성
 router.post('/segment', (req, res, next) => {
-  const { jobId, status } = req;
+  const { jobId, status } = req.body;
   console.log(`${jobId}, ${status}`);
+  res.json({
+    jobId,
+    status
+  });
 });
 
 module.exports = router;

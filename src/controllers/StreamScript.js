@@ -32,6 +32,11 @@ const StreamScript = {
     return files;
   },
 
+  // 최초 원본 영상들을 삭제하는 함수
+  removeOriginalVideos: (videosDir) => {
+    LocalStorage.removeVideo(videosDir);
+  },
+
   // localVideoDir의 비디오들을 삭제하는 함수
   removeVideos: async (videosDir, files) => {
     files.forEach((fileName) => {

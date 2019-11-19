@@ -19,7 +19,7 @@ const Segmenter = {
       console.log(`${resolutionFilePath} ffmpeg encoding 시작!`);
       const segmenter = ffmpeg(resolutionFilePath, { timeout: 432000 })
         .addOptions([
-          "-threads 2", // cpu 사용율을 제한하기 위한 스레드 제한
+          // "-threads 2", // cpu 사용율을 제한하기 위한 스레드 제한
           "-start_number 0",
           "-profile:v baseline", // baseline profile (level 3.0) for H264 video codec
           "-level 3.0",
