@@ -1,9 +1,10 @@
+require('dotenv').config();
 
 const Job = {
   // 16:9 비율로만 트랜스코딩
   createJob: (inputFileName, inputFilePath, inputBucketName) => ({
     jobName: "transcode-360-720",
-    notificationUrl: "localhost:3000/api/segments",
+    notificationUrl: process.env.NOTIFICATION_URL,
     inputs: [
       {
         inputBucketName,

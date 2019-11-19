@@ -9,10 +9,12 @@ router.post('/videos', async (req, res, next) => {
   res.json({ result });
 })
 
-// Job 상태변경에 대한 알림을 받은 뒤, 스트림 데이터를 생성
+// 스트림 데이터를 생성
 router.post('/segments', (req, res, next) => {
   console.log(req);
   StreamController.createStreams();
 });
+
+// Job 상태변경에 대한 알림을 받은 뒤, 개별항목에 대해 스트림 데이터 생성
 
 module.exports = router;
