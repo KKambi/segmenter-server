@@ -8,9 +8,9 @@ const StreamController = {
     const files = fs.readdirSync('videos');
     
     // Storage에 videos 디렉토리 내의 원본 영상 업로드
-    // console.log("업로드 시작!");
-    // await StreamScript.uploadVideos('videos', files);
-    // console.log("업로드 완료!\n");
+    console.log("업로드 시작!");
+    await StreamScript.uploadVideos('videos', files);
+    console.log("업로드 완료!\n");
 
     // nCloud Transcoder API에 Job 생성을 요청한다.
     console.log("Transcode Job생성 요청!");
