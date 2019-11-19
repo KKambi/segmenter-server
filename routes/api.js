@@ -11,6 +11,7 @@ router.post('/videos', async (req, res, next) => {
 
 // Job 상태변경에 대한 알림을 받은 뒤, 스트림 데이터를 생성
 router.post('/segments', (req, res, next) => {
+  console.log(req);
   StreamController.createStreams();
 });
 

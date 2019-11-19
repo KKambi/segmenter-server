@@ -12,10 +12,7 @@ const videoNames = ['360p.mp4', '480p.mp4', '720p.mp4'];
 
 const StreamScript = {
   // Object storage에 영상들 업로드하는 함수
-  uploadVideos: async (videosDir) => {
-    // 특정 디렉토리의 파일 목록 불러오기
-    const files = fs.readdirSync(videosDir);
-
+  uploadVideos: async (videosDir, files) => {
     // Upload 작업의 Promise 배열 만들기
     const uploads = files.reduce((acc, fileName) => {
       if (Parser.isVideo(fileName) === false) {

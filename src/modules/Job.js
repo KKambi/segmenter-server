@@ -3,7 +3,7 @@ const Job = {
   // 16:9 비율로만 트랜스코딩
   createJob: (inputFileName, inputFilePath, inputBucketName) => ({
     jobName: "transcode-360-720",
-    // notificationUrl: "",
+    notificationUrl: "localhost:3000/api/segments",
     inputs: [
       {
         inputBucketName,
