@@ -17,7 +17,7 @@ router.post("/segments", async (req, res, next) => {
 
 // Job 상태변경에 대한 알림을 받은 뒤, 개별항목에 대해 스트림 데이터 생성
 router.post("/segment", async (req, res, next) => {
-  const { jobId, status } = req.body;
+  const { jobId } = req.body;
   const result = await StreamController.createStream(jobId);
   res.json({ result });
 });
