@@ -5,12 +5,10 @@ const Signature = require("./Signature");
 const Parser = require("./Parser");
 const Job = require("./Job");
 
-// API 요청 정보
-const URL = "https://vodtranscoder.apigw.ntruss.com/api/v2/jobs";
-
 // Transcoder 모듈
 const Transcoder = {
   requestJob: async fileName => {
+    const URL = "https://vodtranscoder.apigw.ntruss.com/api/v2/jobs";
     const timestamp = Date.now();
 
     // API 요청을 위한 시그네처
@@ -44,6 +42,7 @@ const Transcoder = {
   },
 
   getJobInfo: async jobId => {
+    const URL = `https://vodtranscoder.apigw.ntruss.com/api/v2/jobs/${jobId}`;
     const timestamp = Date.now();
 
     // API 요청을 위한 시그네처
@@ -59,7 +58,6 @@ const Transcoder = {
     const data = await fetch(URL, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         "x-ncp-iam-access-key": process.env.ACCESS_KEY,
         "x-ncp-apigw-api-key": process.env.API_KEY,
         "x-ncp-apigw-signature-v2": signature,
