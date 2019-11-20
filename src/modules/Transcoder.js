@@ -74,7 +74,7 @@ const Transcoder = {
     }
 
     // 트랜스코딩잇 성공했다면, 해당 fileName 반환
-    const { fileName } = result.jobs[0].inputs.metadata;
+    const { fileName } = result.jobs[0].inputs[0].metadata;
     return fileName;
   }
 };

@@ -74,7 +74,7 @@ const StreamController = {
 
       // fileName 조회를 할 수 없다면, 실패
       if (fileName === false) {
-        throw new Error("Job의 fileName을 불러올 수 없는 에러 발생!");
+        throw new Error("fileName이 없는 콜백!");
       }
 
       const files = [fileName];
