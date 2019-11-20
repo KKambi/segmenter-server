@@ -57,7 +57,7 @@ const Transcoder = {
 
     // Transcoder에 Job정보를 요청
     const data = await fetch(URL, {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         "x-ncp-iam-access-key": process.env.ACCESS_KEY,
@@ -67,7 +67,7 @@ const Transcoder = {
       }
     });
     const result = await data.json();
-    console.log(`응답상태: ${JSON.stringify(result)}`);
+    console.log(`응답상태: ${JSON.stringify(result, null, 4)}`);
   }
 };
 
