@@ -41,6 +41,34 @@ const Transcoder = {
     });
     const result = await data.json();
     console.log(`${fileName}요청상태: ${result.error.message}`);
+  },
+
+  getJobInfo: async jobId => {
+    const timestamp = Date.now();
+
+    // API 요청을 위한 시그네처
+    const signature = Signature.create(
+      process.env.SECRET_KEY,
+      "GET",
+      `/api/v2/jobs/${jobId}`,
+      String(timestamp),
+      process.env.ACCESS_KEY
+    );
+
+    // Transcoder에 Job정보를 요청
+    const data = await fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-ncp-iam-access-key": process.env.ACCESS_KEY,
+        "x-ncp-apigw-api-key": process.env.API_KEY,
+        "x-ncp-apigw-signature-v2": signature,
+        "x-ncp-apigw-timestamp": timestamp
+      }
+    });
+    const result = await data.json();
+    console.log(`${fileName}요청상태: ${result.error.message}`);
+    console.log(`${fileName}응답상태: ${result}`);
   }
 };
 

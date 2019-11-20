@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const StreamScript = require("./StreamScript");
+const Transcoder = require("../modules/Transcoder");
 
 const StreamController = {
   uploadVideos: async () => {
@@ -58,6 +59,18 @@ const StreamController = {
       console.log("원본영상 삭제 시작!");
       StreamScript.removeOriginalVideos("videos");
       console.log("원본영상 삭제 완료!\n");
+
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  },
+
+  createStream: async ({ jobId }) => {
+    try {
+      // 현재 Job에 대한 정보받기
+      const files = await Transcoder.getJobInfo(jobId);
 
       return true;
     } catch (err) {
