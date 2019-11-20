@@ -67,7 +67,7 @@ const StreamController = {
     }
   },
 
-  createStream: async ({ jobId }) => {
+  createStream: async jobId => {
     try {
       // 현재 Job에 대한 정보받기
       const files = await Transcoder.getJobInfo(jobId);

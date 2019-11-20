@@ -58,10 +58,11 @@ const Transcoder = {
     const data = await fetch(URL, {
       method: "GET",
       headers: {
-        "x-ncp-iam-access-key": process.env.ACCESS_KEY,
+        "Content-Type": "application/json",
+        "x-ncp-apigw-timestamp": timestamp,
         "x-ncp-apigw-api-key": process.env.API_KEY,
-        "x-ncp-apigw-signature-v2": signature,
-        "x-ncp-apigw-timestamp": timestamp
+        "x-ncp-iam-access-key": process.env.ACCESS_KEY,
+        "x-ncp-apigw-signature-v2": signature
       }
     });
     const result = await data.json();
