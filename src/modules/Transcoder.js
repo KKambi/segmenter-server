@@ -67,8 +67,7 @@ const Transcoder = {
       }
     });
     const result = await data.json();
-    console.log(`${fileName}요청상태: ${result.error.message}`);
-    console.log(`${fileName}응답상태: ${result}`);
+    console.log(`응답상태: ${result}`);
   }
 };
 
