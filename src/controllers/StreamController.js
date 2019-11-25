@@ -49,7 +49,7 @@ const StreamController = {
 
       // 360/480/720p 원본영상 삭제하기
       console.log("360/480/720 원본영상 삭제 시작!");
-      await StreamScript.removeVideos("videos", files);
+      StreamScript.removeVideos("videos", files);
       console.log("360/480/720 원본영상 삭제 완료!");
 
       // 스트림 데이터 스토리지에 업로드하기
@@ -57,9 +57,14 @@ const StreamController = {
       await StreamScript.uploadSegments("videos", files);
       console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
 
+      // TODO: 스트림 데이터 DB에 연동하기
+      console.log("Segmenter 서버에서 DB연동 시작!");
+      StreamScript.insertURLtoDB(files);
+      console.log("Segmenter 서버에서 DB연동 완료!");
+
       // 스트림 데이터 삭제하고 디렉토리까지 지우기
       console.log("Segmenter 서버에서 스트림 데이터 삭제 시작!");
-      await StreamScript.removeSegments("videos", files);
+      StreamScript.removeSegments("videos", files);
       console.log("Segmenter 서버에서 스트림 데이터 삭제 완료!");
 
       // 원본 영상 삭제하기

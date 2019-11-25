@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 
 const StreamController = require("../src/controllers/StreamController");
@@ -6,12 +7,6 @@ const StreamController = require("../src/controllers/StreamController");
 // 원본영상을 업로드하고, Job생성을 요청
 router.post("/videos", async (req, res, next) => {
   const result = await StreamController.uploadVideos();
-  res.json({ result });
-});
-
-// 스트림 데이터를 생성
-router.post("/segments", async (req, res, next) => {
-  const result = await StreamController.createStreams();
   res.json({ result });
 });
 
