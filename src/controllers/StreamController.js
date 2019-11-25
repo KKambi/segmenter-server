@@ -1,5 +1,4 @@
 const fs = require("fs");
-
 const StreamScript = require("./StreamScript");
 const Transcoder = require("../modules/Transcoder");
 
