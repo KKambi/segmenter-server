@@ -95,11 +95,12 @@ const StreamScript = {
           })
         );
       });
+
+      return true;
     });
 
     // Upload 작업 병렬 처리
     await Promise.all(uploads);
-    return true;
   },
 
   insertURLtoDB: files => {
