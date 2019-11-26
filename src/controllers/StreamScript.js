@@ -77,26 +77,25 @@ const StreamScript = {
   uploadSegments: async (videosDir, files) => {
     const uploads = [];
 
-    files.some(fileName => {
-      if (Parser.isVideo(fileName)) {
-        return false;
-      }
-
+    files.forEach(fileName => {
       const fileNameWithoutExt = Parser.removeExtension(fileName);
       const productsDir = `${videosDir}/${fileNameWithoutExt}`;
       const products = fs.readdirSync(productsDir);
 
       // Upload 작업의 Promise 배열 만들기
-      products.forEach(productName => {
+      products.some(productName => {
+        if (Parser.isVideo(productName)) {
+          return false;
+        }
+
         const localFilePath = path.resolve(productsDir, productName);
         uploads.push(
           Storage.uploadVideo(localFilePath, productName, productsDir, {
             ACL: "public-read"
           })
         );
+        return true;
       });
-
-      return true;
     });
 
     // Upload 작업 병렬 처리
@@ -104,12 +103,12 @@ const StreamScript = {
   },
 
   insertURLtoDB: files => {
-    files.forEach(fileName => {
+    files.forEach(async fileName => {
       // TODO: adaptive bit streaming 어떻게?
       const nameWithoutExt = Parser.removeExtension(fileName);
       const URL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.mp4`;
       const datetime = new Date().format("dd/MM/yyyy hh:mm TT");
-      VideoModel.create({
+      await VideoModel.create({
         name: nameWithoutExt,
         category: "테스트", // TODO: 카테고리 변경
         likes: 0,
