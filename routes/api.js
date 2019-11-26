@@ -14,20 +14,13 @@ router.post("/videos", async (req, res, next) => {
 router.post("/segment", async (req, res, next) => {
   const { jobId, status } = req.body;
 
-  switch (status) {
-    case "FAILED":
-      console.log("FAILED callback");
-      res.json({ result: false });
-      break;
-    case "PROGRESSING":
-      console.log("FAILED callback");
-      res.json({ result: false });
-      break;
-    default:
+  if (status === "SUCCESS") {
+    const result = await StreamController.createStream(jobId);
+    res.json({ result });
+  } else {
+    console.log("FAILED / PROGRESSING callback");
+    res.json({ result: false });
   }
-
-  const result = await StreamController.createStream(jobId);
-  res.json({ result });
 });
 
 module.exports = router;

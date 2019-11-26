@@ -77,7 +77,11 @@ const StreamScript = {
   uploadSegments: async (videosDir, files) => {
     const uploads = [];
 
-    files.forEach(fileName => {
+    files.some(fileName => {
+      if (Parser.isVideo(fileName)) {
+        return false;
+      }
+
       const fileNameWithoutExt = Parser.removeExtension(fileName);
       const productsDir = `${videosDir}/${fileNameWithoutExt}`;
       const products = fs.readdirSync(productsDir);
@@ -86,7 +90,7 @@ const StreamScript = {
       products.forEach(productName => {
         const localFilePath = path.resolve(productsDir, productName);
         uploads.push(
-          Storage.uploadVideo(productName, localFilePath, productsDir)
+          Storage.uploadVideo(localFilePath, productName, productsDir)
         );
       });
     });
