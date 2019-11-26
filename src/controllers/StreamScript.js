@@ -35,6 +35,24 @@ const StreamScript = {
     return files;
   },
 
+  // Object Storage에서 분할할 비디오를 다운로드하는 함수
+  downloadVideos: async (videosDir, files) => {
+    const totalDownloads = files.reduce((acc, fileName) => {
+      const fileNameWithoutExt = Parser.removeExtension(fileName);
+      const localDirPath = path.resolve(videosDir, fileNameWithoutExt);
+      const bucketPath = `${process.env.BUCKET_NAME}/transcoded/${fileNameWithoutExt}`;
+
+      // downloadVideo 작업들을 push
+      RESOLUTIONS.forEach(RESOLUTION => {
+        acc.push(Storage.downloadVideo(localDirPath, RESOLUTION, bucketPath));
+      });
+      return acc;
+    }, []);
+
+    // downloadVideo 작업 병렬 처리
+    await Promise.all(totalDownloads);
+  },
+
   // 최초 원본 영상들을 삭제하는 함수
   removeOriginalVideos: videosDir => {
     LocalStorage.removeVideo(videosDir);
@@ -68,40 +86,6 @@ const StreamScript = {
 
     // requestJob 작업 병렬 처리
     await Promise.all(requests);
-  },
-
-  // Object Storage에서 분할할 비디오를 다운로드하는 함수
-  downloadVideos: async files => {
-    const totalDownloads = files.reduce((acc, fileName) => {
-      const dirName = Parser.removeExtension(fileName);
-      const bucketPath = `${process.env.BUCKET_NAME}/transcoded/${dirName}`;
-
-      // downloadVideo 작업들을 push
-      RESOLUTIONS.forEach(RESOLUTION => {
-        acc.push(Storage.downloadVideo(dirName, RESOLUTION, bucketPath));
-      });
-      return acc;
-    }, []);
-
-    // downloadVideo 작업 병렬 처리
-    await Promise.all(totalDownloads);
-  },
-
-  // Object Storage에서 분할할 비디오를 다운로드하는 함수
-  downloadVideo: async fileName => {
-    const totalDownloads = [];
-    const dirName = Parser.removeExtension(fileName);
-    const bucketPath = `${process.env.BUCKET_NAME}/transcoded/${dirName}`;
-
-    // downloadVideo 작업들을 push
-    RESOLUTIONS.forEach(RESOLUTION => {
-      totalDownloads.push(
-        Storage.downloadVideo(dirName, RESOLUTION, bucketPath)
-      );
-    });
-
-    // downloadVideo 작업 병렬 처리
-    await Promise.all(totalDownloads);
   },
 
   // 다운로드받은 360/480/720p 영상들을 분할하는 함수

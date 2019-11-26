@@ -40,7 +40,7 @@ const StreamController = {
 
       // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상을 다운로드한다.
       console.log("Segmenter 서버에 해당 영상 다운로드!");
-      await StreamScript.downloadVideos(files);
+      await StreamScript.downloadVideos("videos", files);
       console.log("Segmenter 서버에 영상 다운로드 완료!");
 
       // 트랜스코딩된 영상들을 스트림 데이터로 분할하기
