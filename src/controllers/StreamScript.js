@@ -109,7 +109,8 @@ const StreamScript = {
       files.forEach(fileName => {
         // TODO: adaptive bit streaming 어떻게?
         const nameWithoutExt = Parser.removeExtension(fileName);
-        const URL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.mp4`;
+        const streamingURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.m3u8`; // FIXME: abs를 위해 수정할 것!
+        const thumbnailImgURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}_000005.png`;
         const datetime = moment().format("YYYY-MM-DD HH:mm:ss");
         inserts.push(
           VideoModel.create({
@@ -117,9 +118,9 @@ const StreamScript = {
             category: "테스트", // TODO: 카테고리 변경
             likes: 0,
             reg_date: datetime,
-            thumbnail_img_url: null, // TODO: 썸네일 이미지
+            thumbnail_img_url: thumbnailImgURL, // TODO: 썸네일 이미지
             thumbnai_video_url: null,
-            streaming_url: URL
+            streaming_url: streamingURL
           })
         );
       });
