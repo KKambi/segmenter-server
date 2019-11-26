@@ -110,7 +110,7 @@ const StreamController = {
         // TODO: adaptive bit streaming 어떻게?
         const nameWithoutExt = Parser.removeExtension(fileName);
         const streamingURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.m3u8`; // FIXME: abs를 위해 수정할 것!
-        const thumbnailImgURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}_000005.png`;
+        const thumbnailImgURL = `${process.env.CDN_URL}/thumbnails/${nameWithoutExt}_000005.png`;
         const datetime = moment().format("YYYY-MM-DD HH:mm:ss");
         inserts.push(
           VideoModel.create({
@@ -133,13 +133,31 @@ const StreamController = {
   removeVideos: files => {
     files.forEach(fileName => {
       // 1. 원본삭제-videos/Food.mp4
-      let bucketPath = `${process.env.BUCKET_NAME}/videos`;
-      Storage.deleteObjects(files, bucketPath);
+      const originalParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Delete: {
+          Objects: [],
+          Quiet: false
+        }
+      };
+      const originalKey = `/videos/${fileName}`;
+      originalParams.Bucket.Delete.Objects.push({ Key: originalKey });
+      Storage.deleteObjects(originalParams);
 
       // 2. 중간산출물삭제-transcoded/Food/360,480,720.mp4
       const fileNameWithoutExt = Parser.removeExtension(fileName);
-      bucketPath = `${process.env.BUCKET_NAME}/transcoded/${fileNameWithoutExt}`;
-      Storage.deleteObjects(RESOLUTIONS, bucketPath);
+      const transcodedParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Delete: {
+          Objects: [],
+          Quiet: false
+        }
+      };
+      RESOLUTIONS.forEach(RESOLUTION => {
+        const transcodedKey = `transcoded/${fileNameWithoutExt}/${RESOLUTION}`;
+        transcodedParams.Bucket.Delete.Objects.push({ Key: transcodedKey });
+      });
+      Storage.deleteObjects(transcodedParams);
     });
   }
 };
