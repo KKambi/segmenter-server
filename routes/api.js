@@ -2,11 +2,11 @@ const express = require("express");
 
 const router = express.Router();
 
-const StreamController = require("../src/controllers/StreamController");
+const Script = require("../src/controllers/Script");
 
 // 원본영상을 업로드하고, Job생성을 요청
 router.post("/videos", async (req, res) => {
-  const result = await StreamController.uploadVideos();
+  const result = await Script.uploadVideos();
   res.json({ result });
 });
 
@@ -14,7 +14,7 @@ router.post("/videos", async (req, res) => {
 router.post("/segment", async (req, res) => {
   const { jobId } = req.body;
 
-  StreamController.createStream(jobId);
+  Script.createStream(jobId);
   res.json({ result: "요청성공!" });
 });
 
