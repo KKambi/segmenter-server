@@ -27,7 +27,16 @@ const StreamController = {
 
   createStream: async jobId => {
     // 현재 Job에 대한 fileName 조회
-    const { fileName } = await Transcoder.getJobInfo(jobId);
+    const { fileName, status } = await Transcoder.getJobInfo(jobId);
+
+    if (status === "FAILED") {
+      console.log("Transcoder API - FAILED callback");
+      return false;
+    }
+    if (status === "PROGRESSING") {
+      console.log("Transcoder API - FAILED callback");
+      return false;
+    }
 
     const files = [fileName];
 
