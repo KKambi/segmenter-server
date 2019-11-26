@@ -5,10 +5,20 @@ const LocalStorage = require("../modules/LocalStorage");
 const Parser = require("../modules/Parser");
 
 const Script = {
+  trimVideos: () => {
+    const files = fs.readdirSync("videos");
+    files.forEach(fileName => {
+      const newFileName = Parser.removeWhiteSpace(fileName);
+      fs.rename(`videos/${fileName}`, `videos/${newFileName}`, err => {
+        if (err) throw err;
+        console.log(`videos/${newFileName} 공백 제거!`);
+      });
+    });
+  },
+
   uploadVideos: async () => {
     // video directory는 서버의 최상위에 존재하는 디렉토리여야 한다.
-    let files = fs.readdirSync("videos");
-    files = files.map(fileName => Parser.removeWhiteSpace(fileName));
+    const files = fs.readdirSync("videos");
 
     // Storage에 videos 디렉토리 내의 원본 영상 업로드
     console.log("업로드 시작!");
@@ -40,7 +50,7 @@ const Script = {
       return false;
     }
 
-    const files = [Parser.removeWhiteSpace(fileName)];
+    const files = [fileName];
 
     // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상을 다운로드한다.
     console.log("Segmenter 서버에 해당 영상 다운로드!");

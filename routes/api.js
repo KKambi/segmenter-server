@@ -6,6 +6,7 @@ const Script = require("../src/controllers/Script");
 
 // 원본영상을 업로드하고, Job생성을 요청
 router.post("/videos", async (req, res) => {
+  Script.trimVideos();
   const result = await Script.uploadVideos();
   res.json({ result });
 });
