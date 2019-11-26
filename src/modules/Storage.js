@@ -72,19 +72,7 @@ const Storage = {
   },
 
   // bucketPath/ 에 있는 특정 영상들 삭제
-  deleteObjects: (videoNameList, bucketPath) => {
-    const params = {
-      Bucket: bucketPath,
-      Delete: {
-        Objects: [],
-        Quiet: false
-      }
-    };
-
-    videoNameList.forEach(videoName => {
-      params.Delete.Objects.push({ Key: videoName });
-    });
-
+  deleteObjects: params => {
     S3.deleteObjects(params, (err, data) => {
       if (err) console.log(err, err.stack);
       else console.log(data);
