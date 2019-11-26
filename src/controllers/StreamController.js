@@ -27,11 +27,13 @@ const StreamController = {
   createStream: async jobId => {
     try {
       // 현재 Job에 대한 fileName 조회
-      const fileName = await Transcoder.getFileNameOfJob(jobId);
+      const { status, fileName } = await Transcoder.getJobInfo(jobId);
 
-      // fileName 조회를 할 수 없다면, 실패
-      if (fileName === false) {
-        throw new Error("fileName이 없는 콜백!");
+      // progressing, failed callback이라면 수행하지 않음
+      if (status === "PROGRESSING") {
+        throw new Error("Progressing Callback ");
+      } else if (status === "FAILED") {
+        throw new Error("Failed Callback");
       }
 
       const files = [fileName];
@@ -73,7 +75,6 @@ const StreamController = {
 
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   }

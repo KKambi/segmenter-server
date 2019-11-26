@@ -19,7 +19,7 @@ const S3 = new AWS.S3({
 });
 
 const Storage = {
-  uploadVideo: async (name, localFilePath, fileDir) => {
+  uploadVideo: async (localFilePath, name, fileDir) => {
     const dirName = "videos";
     const bucketPath = fileDir
       ? `${process.env.BUCKET_NAME}/${fileDir}`
@@ -42,10 +42,12 @@ const Storage = {
   downloadVideo: async (dirName, videoName, bucketPath) => {
     // 해당 비디오의 폴더가 존재하지 않으면 생성
     const localDirPath = path.join(__dirname, "../../videos", dirName);
-    !fs.existsSync(localDirPath) && fs.mkdirSync(localDirPath);
+    if (fs.existsSync(localDirPath) === false) {
+      fs.mkdirSync(localDirPath);
+    }
 
     // Storage부터 해당 비디오 다운로드 시작
-    const outStream = fs.createWriteStream(localDirPath + "/" + videoName);
+    const outStream = fs.createWriteStream(`${localDirPath}/${videoName}`);
     const inStream = S3.getObject({
       Bucket: bucketPath,
       Key: videoName

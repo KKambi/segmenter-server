@@ -5,6 +5,27 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "rules": {
+      "react/prefer-stateless-function": 0,
+      "react/jsx-filename-extension": 0,
+      "react/jsx-one-expression-per-line": 0,
+      "import/no-unresolved": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": true
+        }
+      ]
+    },
+    "env": {
+      "browser": true
+    }
+  },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "aws-sdk": "^2.569.0",
@@ -16,6 +37,13 @@
     "fluent-ffmpeg": "^2.1.2",
     "morgan": "~1.9.1",
     "mysql2": "^2.0.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^1.7.0"
   }
 }

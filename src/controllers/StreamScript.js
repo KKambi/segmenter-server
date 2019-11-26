@@ -24,7 +24,7 @@ const StreamScript = {
       }
 
       const localFilePath = path.resolve(videosDir, fileName);
-      acc.push(Storage.uploadVideo(fileName, localFilePath));
+      acc.push(Storage.uploadVideo(localFilePath, fileName));
       return acc;
     }, []);
 
