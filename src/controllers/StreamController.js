@@ -26,40 +26,35 @@ const StreamController = {
   },
 
   createStream: async jobId => {
-    try {
-      // 현재 Job에 대한 fileName 조회
-      const { fileName } = await Transcoder.getJobInfo(jobId);
+    // 현재 Job에 대한 fileName 조회
+    const { fileName } = await Transcoder.getJobInfo(jobId);
 
-      const files = [fileName];
+    const files = [fileName];
 
-      // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상을 다운로드한다.
-      console.log("Segmenter 서버에 해당 영상 다운로드!");
-      await StreamScript.downloadVideos("videos", files);
-      console.log("Segmenter 서버에 영상 다운로드 완료!");
+    // 현재 Job이 완성되었다는 응답값을 받으면 해당 영상을 다운로드한다.
+    console.log("Segmenter 서버에 해당 영상 다운로드!");
+    await StreamScript.downloadVideos("videos", files);
+    console.log("Segmenter 서버에 영상 다운로드 완료!");
 
-      // 트랜스코딩된 영상들을 스트림 데이터로 분할하기
-      console.log("Segmenter 서버에서 분할 작업 시작!");
-      await StreamScript.createSegments("videos", files);
-      console.log("Segmenter 서버에서 분할 작업 완료!");
+    // 트랜스코딩된 영상들을 스트림 데이터로 분할하기
+    console.log("Segmenter 서버에서 분할 작업 시작!");
+    await StreamScript.createSegments("videos", files);
+    console.log("Segmenter 서버에서 분할 작업 완료!");
 
-      // 스트림 데이터 스토리지에 업로드하기
-      console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
-      await StreamScript.uploadSegments("videos", files);
-      console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
+    // 스트림 데이터 스토리지에 업로드하기
+    console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
+    await StreamScript.uploadSegments("videos", files);
+    console.log("Segmenter 서버에서 분할 파일 업로드 완료!");
 
-      // TODO: 스트림 데이터 DB에 연동하기
-      console.log("Segmenter 서버에서 DB연동 시작!");
-      StreamScript.insertURLtoDB(files);
+    // TODO: 스트림 데이터 DB에 연동하기
+    console.log("Segmenter 서버에서 DB연동 시작!");
+    StreamScript.insertURLtoDB(files);
 
-      // 영상 삭제하기
-      console.log("영상 삭제 시작!");
-      LocalStorage.removeVideos("videos", files);
+    // 영상 삭제하기
+    console.log("영상 삭제 시작!");
+    LocalStorage.removeVideos("videos", files);
 
-      return true;
-    } catch (err) {
-      console.log(err.message);
-      return false;
-    }
+    return true;
   }
 };
 
