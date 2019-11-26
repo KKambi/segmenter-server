@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const moment = require("moment");
 require("dotenv").config();
 
 const Storage = require("../modules/Storage");
@@ -109,7 +110,7 @@ const StreamScript = {
         // TODO: adaptive bit streaming 어떻게?
         const nameWithoutExt = Parser.removeExtension(fileName);
         const URL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.mp4`;
-        const datetime = new Date().format("dd/MM/yyyy hh:mm TT");
+        const datetime = moment().format("YYYY-MM-DD HH:mm:ss");
         inserts.push(
           VideoModel.create({
             name: nameWithoutExt,
