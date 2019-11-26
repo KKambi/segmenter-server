@@ -167,7 +167,7 @@ const StreamController = {
           Quiet: false
         }
       };
-      const transcodedDirKey = `transcoded/${fileNameWithoutExt}`;
+      const transcodedDirKey = `transcoded/${fileNameWithoutExt}/`;
       transcodedDirParams.Delete.Objects.push({ Key: transcodedDirKey });
       Storage.deleteObjects(transcodedDirParams);
     });
