@@ -90,7 +90,9 @@ const StreamScript = {
       products.forEach(productName => {
         const localFilePath = path.resolve(productsDir, productName);
         uploads.push(
-          Storage.uploadVideo(localFilePath, productName, productsDir)
+          Storage.uploadVideo(localFilePath, productName, productsDir, {
+            ACL: "public-read"
+          })
         );
       });
     });
@@ -105,11 +107,12 @@ const StreamScript = {
       // TODO: adaptive bit streaming 어떻게?
       const nameWithoutExt = Parser.removeExtension(fileName);
       const URL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.mp4`;
+      const datetime = new Date().format("dd/MM/yyyy hh:mm TT");
       VideoModel.create({
         name: nameWithoutExt,
         category: "테스트", // TODO: 카테고리 변경
         likes: 0,
-        reg_date: `CONVERT(${new Date(Date.now())}, DATETIME)`,
+        reg_date: datetime,
         thumbnail_img_url: null, // TODO: 썸네일 이미지
         thumbnai_video_url: null,
         streaming_url: URL

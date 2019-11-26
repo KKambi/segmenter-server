@@ -18,18 +18,19 @@ const S3 = new AWS.S3({
 });
 
 const Storage = {
-  uploadVideo: async (localFilePath, videoName, fileDir) => {
+  uploadVideo: async (localFilePath, videoName, fileDir, options) => {
     const dirName = "videos";
     const bucketPath = fileDir
       ? `${process.env.BUCKET_NAME}/${fileDir}`
       : `${process.env.BUCKET_NAME}/${dirName}`;
-    console.log(localFilePath);
+    const ACL = options ? options.ACL : "private";
 
     // 파일 업로드
     try {
       await S3.putObject({
         Bucket: bucketPath,
         Key: videoName,
+        ACL,
         Body: fs.createReadStream(localFilePath)
       }).promise();
     } catch (err) {
@@ -38,6 +39,7 @@ const Storage = {
     }
 
     console.log(`${videoName} 업로드 완료!`);
+    return true;
   },
 
   downloadVideo: async (localDirPath, videoName, bucketPath) => {
