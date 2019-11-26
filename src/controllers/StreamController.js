@@ -60,8 +60,8 @@ const StreamController = {
     StreamScript.insertURLtoDB(files);
 
     // 영상 삭제하기
-    console.log("영상 삭제 시작!");
-    LocalStorage.removeVideos("videos", files);
+    // console.log("영상 삭제 시작!");
+    // LocalStorage.removeVideos("videos", files);
 
     return true;
   }

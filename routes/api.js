@@ -14,8 +14,8 @@ router.post("/videos", async (req, res, next) => {
 router.post("/segment", async (req, res, next) => {
   const { jobId } = req.body;
 
-  const result = await StreamController.createStream(jobId);
-  res.json({ result });
+  StreamController.createStream(jobId);
+  res.json({ result: "요청성공!" });
 });
 
 module.exports = router;

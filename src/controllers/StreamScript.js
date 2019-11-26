@@ -108,7 +108,7 @@ const StreamScript = {
         name: nameWithoutExt,
         category: "테스트", // TODO: 카테고리 변경
         likes: 0,
-        reg_date: Date.now(),
+        reg_date: new Date(Date.now()),
         thumbnail_img_url: null, // TODO: 썸네일 이미지
         thumbnai_video_url: null,
         streaming_url: URL
