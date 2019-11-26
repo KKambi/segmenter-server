@@ -75,7 +75,7 @@ const StreamController = {
 
       return true;
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       return false;
     }
   }
