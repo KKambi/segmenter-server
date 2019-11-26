@@ -3,7 +3,6 @@ const path = require("path");
 require("dotenv").config();
 
 const Storage = require("../modules/Storage");
-const LocalStorage = require("../modules/LocalStorage");
 const Transcoder = require("../modules/Transcoder");
 const Parser = require("../modules/Parser");
 const Segmenter = require("../modules/Segmenter");
@@ -53,30 +52,6 @@ const StreamScript = {
     await Promise.all(totalDownloads);
   },
 
-  // 최초 원본 영상들을 삭제하는 함수
-  removeOriginalVideos: videosDir => {
-    LocalStorage.removeVideo(videosDir);
-  },
-
-  // localVideoDir의 비디오들을 삭제하는 함수
-  removeVideos: async (videosDir, files) => {
-    files.forEach(fileName => {
-      const fileDir = Parser.removeExtension(fileName);
-      const fileDirPath = `${videosDir}/${fileDir}`;
-      LocalStorage.removeVideo(fileDirPath);
-    });
-  },
-
-  // localVideoDir 디렉토리를 삭제하는 함수
-  removeSegments: async (videosDir, files) => {
-    files.forEach(fileName => {
-      const fileDir = Parser.removeExtension(fileName);
-      const fileDirPath = `${videosDir}/${fileDir}`;
-      LocalStorage.removeSegment(fileDirPath);
-      LocalStorage.removeVideoDir(fileDirPath);
-    });
-  },
-
   // Transcoder API에 다수의 Job 생성 요청 보내는 함수
   requestJobs: async files => {
     // requestJob 작업의 Promise 배열 만들기
@@ -90,13 +65,15 @@ const StreamScript = {
 
   // 다운로드받은 360/480/720p 영상들을 분할하는 함수
   createSegments: async (videosDir, files) => {
-    const listSize = files.length;
-    for (let i = 0; i < listSize; i++) {
-      const fileName = files[i];
-      await Segmenter.createSegment(videosDir, fileName);
-    }
+    const segments = [];
+    files.forEach(fileName => {
+      segments.push(Segmenter.createSegment(videosDir, fileName));
+    });
+
+    await Promise.all(segments);
   },
 
+  // 분할한 스트리밍 데이터를 업로드하는 함수
   uploadSegments: async (videosDir, files) => {
     const uploads = [];
 

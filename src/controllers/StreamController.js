@@ -1,6 +1,7 @@
 const fs = require("fs");
 const StreamScript = require("./StreamScript");
 const Transcoder = require("../modules/Transcoder");
+const LocalStorage = require("../modules/LocalStorage");
 
 const StreamController = {
   uploadVideos: async () => {
@@ -48,11 +49,6 @@ const StreamController = {
       await StreamScript.createSegments("videos", files);
       console.log("Segmeneter 서버에서 분할 작업 완료!");
 
-      // 360/480/720p 원본영상 삭제하기
-      console.log("360/480/720 원본영상 삭제 시작!");
-      StreamScript.removeVideos("videos", files);
-      console.log("360/480/720 원본영상 삭제 완료!");
-
       // 스트림 데이터 스토리지에 업로드하기
       console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
       await StreamScript.uploadSegments("videos", files);
@@ -63,15 +59,10 @@ const StreamController = {
       StreamScript.insertURLtoDB(files);
       console.log("Segmenter 서버에서 DB연동 완료!");
 
-      // 스트림 데이터 삭제하고 디렉토리까지 지우기
-      console.log("Segmenter 서버에서 스트림 데이터 삭제 시작!");
-      StreamScript.removeSegments("videos", files);
-      console.log("Segmenter 서버에서 스트림 데이터 삭제 완료!");
-
-      // 원본 영상 삭제하기
-      console.log("원본영상 삭제 시작!");
-      StreamScript.removeOriginalVideos("videos");
-      console.log("원본영상 삭제 완료!\n");
+      // 영상 삭제하기
+      console.log("영상 삭제 시작!");
+      StreamScript.removeVideos("videos", files);
+      console.log("영상 삭제 완료!\n");
 
       return true;
     } catch (err) {
