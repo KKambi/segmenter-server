@@ -141,7 +141,7 @@ const StreamController = {
         }
       };
       const originalKey = `/videos/${fileName}`;
-      originalParams.Bucket.Delete.Objects.push({ Key: originalKey });
+      originalParams.Delete.Objects.push({ Key: originalKey });
       Storage.deleteObjects(originalParams);
 
       // 2. 중간산출물삭제-transcoded/Food/360,480,720.mp4
@@ -155,7 +155,7 @@ const StreamController = {
       };
       RESOLUTIONS.forEach(RESOLUTION => {
         const transcodedKey = `transcoded/${fileNameWithoutExt}/${RESOLUTION}`;
-        transcodedParams.Bucket.Delete.Objects.push({ Key: transcodedKey });
+        transcodedParams.Delete.Objects.push({ Key: transcodedKey });
       });
       Storage.deleteObjects(transcodedParams);
     });
