@@ -12,7 +12,20 @@ router.post("/videos", async (req, res, next) => {
 
 // Job 상태변경에 대한 알림을 받은 뒤, 개별항목에 대해 스트림 데이터 생성
 router.post("/segment", async (req, res, next) => {
-  const { jobId } = req.body;
+  const { jobId, status } = req.body;
+
+  switch (status) {
+    case "FAILED":
+      console.log("FAILED callback");
+      res.json({ result: false });
+      break;
+    case "PROGRESSING":
+      console.log("FAILED callback");
+      res.json({ result: false });
+      break;
+    default:
+  }
+
   const result = await StreamController.createStream(jobId);
   res.json({ result });
 });

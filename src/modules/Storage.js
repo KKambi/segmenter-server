@@ -23,6 +23,7 @@ const Storage = {
     const bucketPath = fileDir
       ? `${process.env.BUCKET_NAME}/${fileDir}`
       : `${process.env.BUCKET_NAME}/${dirName}`;
+    console.log(localFilePath);
 
     // 파일 업로드
     try {
@@ -33,6 +34,7 @@ const Storage = {
       }).promise();
     } catch (err) {
       console.log(`S3 에러: ${err}`);
+      return false;
     }
 
     console.log(`${videoName} 업로드 완료!`);

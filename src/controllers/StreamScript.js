@@ -78,13 +78,16 @@ const StreamScript = {
     const uploads = [];
 
     files.forEach(fileName => {
-      const fileDir = `${videosDir}/${Parser.removeExtension(fileName)}`;
-      const streams = fs.readdirSync(fileDir);
+      const fileNameWithoutExt = Parser.removeExtension(fileName);
+      const productsDir = `${videosDir}/${fileNameWithoutExt}`;
+      const products = fs.readdirSync(productsDir);
 
       // Upload 작업의 Promise 배열 만들기
-      streams.forEach(stream => {
-        const localFilePath = path.resolve(fileDir, stream);
-        uploads.push(Storage.uploadVideo(stream, localFilePath, fileDir));
+      products.forEach(productName => {
+        const localFilePath = path.resolve(productsDir, productName);
+        uploads.push(
+          Storage.uploadVideo(productName, localFilePath, productsDir)
+        );
       });
     });
 

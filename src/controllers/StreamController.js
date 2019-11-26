@@ -28,14 +28,7 @@ const StreamController = {
   createStream: async jobId => {
     try {
       // 현재 Job에 대한 fileName 조회
-      const { status, fileName } = await Transcoder.getJobInfo(jobId);
-
-      // progressing, failed callback이라면 수행하지 않음
-      if (status === "PROGRESSING") {
-        throw new Error("Progressing Callback ");
-      } else if (status === "FAILED") {
-        throw new Error("Failed Callback");
-      }
+      const { fileName } = await Transcoder.getJobInfo(jobId);
 
       const files = [fileName];
 
@@ -45,9 +38,9 @@ const StreamController = {
       console.log("Segmenter 서버에 영상 다운로드 완료!");
 
       // 트랜스코딩된 영상들을 스트림 데이터로 분할하기
-      console.log("Segmeneter 서버에서 분할 작업 시작!");
+      console.log("Segmenter 서버에서 분할 작업 시작!");
       await StreamScript.createSegments("videos", files);
-      console.log("Segmeneter 서버에서 분할 작업 완료!");
+      console.log("Segmenter 서버에서 분할 작업 완료!");
 
       // 스트림 데이터 스토리지에 업로드하기
       console.log("Segmenter 서버에서 분할 파일 업로드 시작!");
@@ -57,12 +50,10 @@ const StreamController = {
       // TODO: 스트림 데이터 DB에 연동하기
       console.log("Segmenter 서버에서 DB연동 시작!");
       StreamScript.insertURLtoDB(files);
-      console.log("Segmenter 서버에서 DB연동 완료!");
 
       // 영상 삭제하기
       console.log("영상 삭제 시작!");
-      StreamScript.removeVideos("videos", files);
-      console.log("영상 삭제 완료!\n");
+      LocalStorage.removeVideos("videos", files);
 
       return true;
     } catch (err) {

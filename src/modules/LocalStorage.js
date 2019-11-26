@@ -2,7 +2,7 @@ const fs = require("fs");
 const Parser = require("../modules/Parser");
 
 const LocalStorage = {
-  removeVidoes: (videosDir, files) => {
+  removeVideos: (videosDir, files) => {
     files.forEach(fileName => {
       const fileNameWithoutExt = Parser.removeExtension(fileName);
       const productsPath = `${videosDir}/${fileNameWithoutExt}`;
