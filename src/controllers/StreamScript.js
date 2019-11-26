@@ -102,9 +102,9 @@ const StreamScript = {
     await Promise.all(uploads);
   },
 
-  insertURLtoDB: files => {
+  insertURLtoDB: async files => {
     const inserts = [];
-    files.forEach(async fileName => {
+    files.forEach(fileName => {
       // TODO: adaptive bit streaming 어떻게?
       const nameWithoutExt = Parser.removeExtension(fileName);
       const URL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/720p.mp4`;
@@ -122,7 +122,7 @@ const StreamScript = {
       );
     });
 
-    Promise.all(inserts);
+    await Promise.all(inserts);
   }
 };
 
