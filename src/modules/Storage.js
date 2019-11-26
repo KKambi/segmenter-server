@@ -75,7 +75,6 @@ const Storage = {
   deleteObjects: params => {
     S3.deleteObjects(params, (err, data) => {
       if (err) console.log(err, err.stack);
-      else console.log(data);
     });
   }
 };

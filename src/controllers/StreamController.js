@@ -118,7 +118,7 @@ const StreamController = {
             category: "테스트", // TODO: 카테고리 변경
             likes: 0,
             reg_date: datetime,
-            thumbnail_img_url: thumbnailImgURL, // TODO: 썸네일 이미지
+            thumbnail_img_url: thumbnailImgURL,
             thumbnai_video_url: null,
             streaming_url: streamingURL
           })
@@ -140,7 +140,7 @@ const StreamController = {
           Quiet: false
         }
       };
-      const originalKey = `/videos/${fileName}`;
+      const originalKey = `videos/${fileName}`;
       originalParams.Delete.Objects.push({ Key: originalKey });
       Storage.deleteObjects(originalParams);
 
@@ -158,6 +158,18 @@ const StreamController = {
         transcodedParams.Delete.Objects.push({ Key: transcodedKey });
       });
       Storage.deleteObjects(transcodedParams);
+
+      // 3. 중간산출물폴더삭제-transcoded/Food
+      const transcodedDirParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Delete: {
+          Objects: [],
+          Quiet: false
+        }
+      };
+      const transcodedDirKey = `transcoded/${fileNameWithoutExt}`;
+      transcodedDirParams.Delete.Objects.push({ Key: transcodedDirKey });
+      Storage.deleteObjects(transcodedDirParams);
     });
   }
 };
