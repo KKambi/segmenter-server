@@ -23,6 +23,10 @@ const Parser = {
     }, []);
 
     return list;
+  },
+
+  removeWhiteSpace: fileName => {
+    return fileName.replace(/\s+/g, "");
   }
 };
 
