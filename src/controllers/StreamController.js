@@ -109,7 +109,7 @@ const StreamController = {
       files.forEach(fileName => {
         // TODO: adaptive bit streaming 어떻게?
         const nameWithoutExt = Parser.removeExtension(fileName);
-        const streamingURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/360p.stream.m3u8`; // FIXME: abs를 위해 수정할 것!
+        const streamingURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/${nameWithoutExt}.m3u8`;
         const thumbnailImgURL = `${process.env.CDN_URL}/thumbnails/${nameWithoutExt}/${nameWithoutExt}_000005.png`;
         const datetime = moment().format("YYYY-MM-DD HH:mm:ss");
         inserts.push(
