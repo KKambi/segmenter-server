@@ -3,6 +3,7 @@ const StreamController = require("./StreamController");
 const Transcoder = require("../modules/Transcoder");
 const LocalStorage = require("../modules/LocalStorage");
 const Parser = require("../modules/Parser");
+const Segmenter = require("../modules/Segmenter");
 
 const Script = {
   trimVideos: () => {
@@ -61,6 +62,11 @@ const Script = {
     console.log("Segmenter 서버에서 분할 작업 시작!");
     await StreamController.createSegments("videos", files);
     console.log("Segmenter 서버에서 분할 작업 완료!");
+
+    // master manifest 파일 만들기
+    console.log("Segmenter 서버에서 대표 재생목록 생성 시작!");
+    await Segmenter.createMasterManifest("videos", files[0]);
+    console.log("Segmenter 서버에서 대표 재생목록 생성 완료!");
 
     // 스트림 데이터 스토리지에 업로드하기
     console.log("Segmenter 서버에서 분할 파일 업로드 시작!");

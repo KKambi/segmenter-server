@@ -1,5 +1,6 @@
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const fs = require("fs");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -27,8 +28,7 @@ const Segmenter = {
           "-level 3.0",
           "-hls_time 10", // 10 second segment duration
           "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
-          "-f hls", // HLS format
-          `-master_pl_name ${fileNameWithoutExt}.m3u8`
+          "-f hls" // HLS format
         ])
         .output(`${resolutionFilename}.stream.m3u8`);
 
@@ -50,6 +50,21 @@ const Segmenter = {
     });
 
     await Promise.all(resolutions);
+  },
+
+  createMasterManifest: async (videosDir, fileName) => {
+    const content = `#EXTM3U
+    #EXT-X-VERSION:3
+    
+    #EXT-X-STREAM-INF:BANDWIDTH=1280000
+    360p.stream.m3u8
+    #EXT-X-STREAM-INF:BANDWIDTH=2560000
+    480p.stream.m3u8
+    #EXT-X-STREAM-INF:BANDWIDTH=7680000
+    720p.stream.m3u8`;
+
+    const fileNameWithoutExt = Parser.removeExtension(fileName);
+    fs.writeFileSync(`${videosDir}/${fileNameWithoutExt}/`, content);
   }
 };
 
