@@ -27,7 +27,8 @@ const Segmenter = {
           "-level 3.0",
           "-hls_time 10", // 10 second segment duration
           "-hls_list_size 0", // Maxmimum number of playlist entries (0 means all entries/infinite)
-          "-f hls" // HLS format
+          "-f hls", // HLS format
+          `-master_pl_name ${fileNameWithoutExt}.m3u8`
         ])
         .output(`${resolutionFilename}.stream.m3u8`);
 
