@@ -64,7 +64,10 @@ const Segmenter = {
     720p.stream.m3u8`;
 
     const fileNameWithoutExt = Parser.removeExtension(fileName);
-    fs.writeFileSync(`${videosDir}/${fileNameWithoutExt}/`, content);
+    fs.writeFileSync(
+      `${videosDir}/${fileNameWithoutExt}/${fileNameWithoutExt}.m3u8`,
+      content
+    );
   }
 };
 
