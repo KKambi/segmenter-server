@@ -1,14 +1,16 @@
 const path = require("path");
 
+const EXT_LEN = 3;
+
 const Parser = {
   isVideo: fileName => {
-    const extension = fileName.slice(fileName.length - 3);
+    const extension = fileName.slice(fileName.length - EXT_LEN);
     const regExp = new RegExp("(mp4|avi|mkv|flv$)", "i");
     return regExp.test(extension);
   },
 
   removeExtension: fileName => {
-    return fileName.slice(0, fileName.length - 4);
+    return fileName.slice(0, fileName.length - (EXT_LEN + 1));
   },
 
   createStoragePath: fileName => {
