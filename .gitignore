@@ -1,5 +1,5 @@
 node_modules
-videos
+# videos
 .env
 /*.mp4
 *.ts
