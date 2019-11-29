@@ -109,8 +109,8 @@ const StreamController = {
       files.forEach(fileName => {
         // TODO: adaptive bit streaming 어떻게?
         const nameWithoutExt = Parser.removeExtension(fileName);
-        const streamingURL = `${process.env.CDN_URL}/videos/${nameWithoutExt}/${nameWithoutExt}.m3u8`;
-        const thumbnailImgURL = `${process.env.CDN_URL}/thumbnails/${nameWithoutExt}/${nameWithoutExt}_000005.png`;
+        const streamingURL = `https://${process.env.CDN_URL}/videos/${nameWithoutExt}/${nameWithoutExt}.m3u8`;
+        const thumbnailImgURL = `https://${process.env.CDN_URL}/thumbnails/${nameWithoutExt}/${nameWithoutExt}_000005.png`;
         const datetime = moment().format("YYYY-MM-DD HH:mm:ss");
         inserts.push(
           VideoModel.create({
